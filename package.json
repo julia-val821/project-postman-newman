@@ -17,6 +17,6 @@
   "devDependencies": {
     "newman-reporter-testrail": "^1.0.52",
     "newman-reporter-htmlextra": "^1.22.11",
-    "newman": "^6.1.0"
+    "newman": "^5.1.2"
   }
 }
