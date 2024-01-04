@@ -11,7 +11,7 @@ on:
     branches: [ "master" ]
   schedule:
      #At the end of every day
-   - cron: 5 * * * *
+   - cron: 55 23 * * *
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -28,16 +28,30 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
+      # Runs a single command using the runner's shell
       - run: npm i
 
-      # Install the newman command line utility and also install the html extra reporter
+      # Install the Newman command line utility and also install the HTML extra reporter
       - name: Install newman
         run: |
           npm install -g newman
           npm install -g newman-reporter-htmlextra
           npm install -g newman-reporter-testrail
-         
+          
+      # Make a directory to upload the test results
+      - name: Make a Directory for results
+        run: |
+          mkdir -p newman
+          ls -la
+  
       # Run the POSTMAN collection   
       - name: Run API Tests
-        run: npm run postman
+        run: npm run postman:report
+
+      - name: Upload a Build Artifact
+        if: always()
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: RunReports
+          path: newman
+          
